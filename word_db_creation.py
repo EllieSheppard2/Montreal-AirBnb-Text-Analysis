@@ -4,7 +4,17 @@ import matplotlib.pyplot as plt
 import re
 from collections import Counter
 
-montreal = pd.read_csv('listings.csv')
+import pandas as pd
+
+#make it a function for ease in other files
+def load_data():
+    montreal = pd.read_csv('listings.csv')
+    montreal['name'] = montreal['name'].fillna('')
+    montreal['description'] = montreal['description'].fillna('')
+    return montreal
+
+montreal = load_data()
+
 #print(montreal.head(10))
 montreal['review_scores_rating'].plot(kind='hist', bins = 50)
 plt.xticks(np.arange(0, 5, .125), fontsize=3)
@@ -29,7 +39,8 @@ def get_word_counts(series):
     fillers = {
         'the', 'and', 'a', 'to', 'of', 'in', 'for', 'is', 'on', 'with', 'this', 'that',
         'it', 'as', 'at', 'an', 'be', 'are', 'from', 'by', 'or', 'your', 'you',
-        'our', 'we', 'has', 'have', 'will', 'can', 'all', 'more', 'also', 'montreal', 'montral', 'bed'
+        'our', 'we', 'has', 'have', 'will', 'can', 'all', 'more', 'also', 'montreal',
+        'montral', 'bed', 'located'
     }
 
     filtered = [w for w in words if w not in fillers and len(w) > 2]
@@ -55,3 +66,5 @@ description_df = pd.DataFrame(
 
 print("\nMost common words in description of listing")
 print(description_df)
+
+#TODO: want to take words that pop up, thinking of finding a way to visualize distrubution of ratings for what listings they show up in.
