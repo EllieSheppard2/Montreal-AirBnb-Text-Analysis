@@ -10,7 +10,7 @@ montreal['search_text'] = (
     montreal['name'] + " " + montreal['description']
 ).str.lower()
 
-word_of_interest = "cozy" #change to whatever word we are looking for
+word_of_interest = "bright" #change to whatever word we are looking for
 
 montreal['has_word'] = montreal['search_text'].str.contains(rf'\b{word_of_interest}\b')
 montreal_clean = montreal.dropna(subset=['review_scores_rating'])
@@ -24,5 +24,12 @@ plt.hist(has['review_scores_rating'], bins=30, alpha=0.9, color="pink", label='H
 plt.legend()
 plt.show()
 
-#downtown seems to not be relevant. can copy and paste this with other key words
-#TODO: make it so i can use with any variable
+#not relevant:
+#downtown, cozy, modern
+
+#relevant:
+#mtl? bright?
+
+#overall, outliers in low ranking seems to be only listings without most common words. maybe investigate having a common keyword as a whole?(not specifics)
+
+#TODO: run multiple linear regression on 5 most promising words?
