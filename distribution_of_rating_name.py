@@ -10,16 +10,19 @@ montreal['search_text'] = (
     montreal['name'] + " " + montreal['description']
 ).str.lower()
 
-montreal['has_downtown'] = montreal['search_text'].str.contains(r'\bdowntown\b')
+word_of_interest = "cozy" #change to whatever word we are looking for
+
+montreal['has_word'] = montreal['search_text'].str.contains(rf'\b{word_of_interest}\b')
 montreal_clean = montreal.dropna(subset=['review_scores_rating'])
 
-downtown = montreal_clean[montreal_clean['has_downtown']]
-non_downtown = montreal_clean[~montreal_clean['has_downtown']]
+has = montreal_clean[montreal_clean['has_word']]
+has_not = montreal_clean[~montreal_clean['has_word']]
 
 plt.figure()
-plt.hist(downtown['review_scores_rating'], bins=30, alpha=0.6, label='Downtown')
-plt.hist(non_downtown['review_scores_rating'], bins=30, alpha=0.6, label='No Downtown')
+plt.hist(has_not['review_scores_rating'], bins=30, alpha=0.25, color="purple", label='Does Not Have {word_of_interest}'.format(word_of_interest=word_of_interest))
+plt.hist(has['review_scores_rating'], bins=30, alpha=0.9, color="pink", label='Has {word_of_interest}'.format(word_of_interest=word_of_interest))
+plt.legend()
 plt.show()
 
 #downtown seems to not be relevant. can copy and paste this with other key words
-#TODO: copy and paste this, but obviously modify for other key words. if distribution looks different then add labels o see wich is whic.
+#TODO: make it so i can use with any variable

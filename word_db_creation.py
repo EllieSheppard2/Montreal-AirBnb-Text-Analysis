@@ -17,7 +17,7 @@ montreal = load_data()
 
 #print(montreal.head(10))
 montreal['review_scores_rating'].plot(kind='hist', bins = 50)
-plt.xticks(np.arange(0, 5, .125), fontsize=3)
+#plt.xticks(np.arange(0, 5, .125), fontsize=3)
 #plt.show()
 #choose "highly rated" threshold at 4.75
 
@@ -66,5 +66,3 @@ description_df = pd.DataFrame(
 
 print("\nMost common words in description of listing")
 print(description_df)
-
-#TODO: want to take words that pop up, thinking of finding a way to visualize distrubution of ratings for what listings they show up in.
