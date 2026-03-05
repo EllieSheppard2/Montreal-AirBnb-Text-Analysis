@@ -75,9 +75,9 @@ for word in candidate_words:
 
 results_df = pd.DataFrame(results)
 
-top5 = results_df.sort_values('abs_diff', ascending=False).head(5)
+top = results_df.sort_values('abs_diff', ascending=False).head(10)
 
-print(top5)
+print(top)
 
 #Pasting output as it takes long to run
 #               word  mean_has  mean_not      diff  abs_diff  count_has
@@ -86,3 +86,8 @@ print(top5)
 #1041  establishment  4.456364  4.724909 -0.268546  0.268546         33
 #1068         onsite  4.989688  4.721500  0.268187  0.268187         64
 #304        tourists  4.462250  4.725126 -0.262876  0.262876         40
+#729          resort  4.983676  4.721413  0.262264  0.262264         68
+#946     kitchenette  4.468611  4.727409 -0.258798  0.258798        108
+#624            step  4.478286  4.724879 -0.246593  0.246593         35 is this one good? step could be as in one "step" from downtown, or could just be a filler word
+#993         doorman  4.967465  4.721461  0.246004  0.246004         71
+#866              st  4.484054  4.724916 -0.240862  0.240862         37 this one is stupid

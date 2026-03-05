@@ -6,7 +6,7 @@ montreal = load_data()
 montreal = montreal.dropna(subset=['review_scores_rating']).copy()
 montreal['description'] = montreal['description'].fillna('').str.lower()
 
-words_to_use = ['value', 'hostel', 'establishment', 'onsite', 'tourists']
+words_to_use = ['value', 'hostel', 'tourists']
 
 for word in words_to_use:
     montreal[f'has_{word}'] = montreal['description'].str.contains(rf'\b{word}\b').astype(int)
@@ -18,3 +18,10 @@ model = sm.OLS(y, X).fit()
 print(model.summary())
 
 #may consider adding more words to this model? establishment becomes non significant
+
+#added resort, kitchenette, doorman to value, hostel, establishment, onsite, tourists. now onsite is insignificant as well as kitchenette, doorman, establishment, resort
+
+#re-running without those. other variables stay significant
+
+#so, hostel value and tourist key words in description have significance in rating. however, they only explain 0.008 of the variation in scores.
+
