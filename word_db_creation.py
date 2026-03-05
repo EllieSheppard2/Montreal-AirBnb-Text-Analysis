@@ -54,8 +54,8 @@ name_df = pd.DataFrame(
     columns=['word', 'count']
 )
 
-print("Most common words in name of listing")
-print(name_df)
+#print("Most common words in name of listing")
+#print(name_df)
 
 description_counts = get_word_counts(high_rated['description'])
 
@@ -64,5 +64,5 @@ description_df = pd.DataFrame(
     columns=['word', 'count']
 )
 
-print("\nMost common words in description of listing")
-print(description_df)
+#print("\nMost common words in description of listing")
+#print(description_df)
