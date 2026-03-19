@@ -6,7 +6,8 @@ montreal = load_data()
 montreal = montreal.dropna(subset=['review_scores_rating']).copy()
 montreal['description'] = montreal['description'].fillna('').str.lower()
 
-words_to_use = ['value', 'hostel', 'tourists']
+words_to_use = ['value', 'hostel', 'establishment', 'tourists', 'onsite', 'resort', 'kitchenette', 'doorman', 'homey', 'university',
+                'student', 'jacuzzi', 'enclave', 'hospitals']
 
 for word in words_to_use:
     montreal[f'has_{word}'] = montreal['description'].str.contains(rf'\b{word}\b').astype(int)
@@ -25,3 +26,4 @@ print(model.summary())
 
 #so, hostel value and tourist key words in description have significance in rating. however, they only explain 0.008 of the variation in scores.
 
+#actually going with printing top 30 out of find_discrepancies, then doing regression with those that have gaps above .20 and look resonable, ie. don't include "st"

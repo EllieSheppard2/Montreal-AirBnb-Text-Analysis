@@ -75,7 +75,7 @@ for word in candidate_words:
 
 results_df = pd.DataFrame(results)
 
-top = results_df.sort_values('abs_diff', ascending=False).head(10)
+top = results_df.sort_values('abs_diff', ascending=False).head(30)
 
 print(top)
 
