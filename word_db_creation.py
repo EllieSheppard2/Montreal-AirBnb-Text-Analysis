@@ -16,9 +16,16 @@ def load_data():
 montreal = load_data()
 
 #print(montreal.head(10))
-montreal['review_scores_rating'].plot(kind='hist', bins = 50)
-#plt.xticks(np.arange(0, 5, .125), fontsize=3)
-#plt.show()
+montreal['review_scores_rating'].plot(kind='hist', bins=50)
+
+plt.xlabel("Rating")
+plt.ylabel("# of Airbnb with Rating")
+plt.title("Distribution of Airbnb Ratings")
+
+plt.xticks(np.arange(0, 5, .125), rotation=45, fontsize=6)
+plt.tight_layout()
+
+plt.show()
 #choose "highly rated" threshold at 4.75
 
 montreal_clean = montreal.dropna(subset=['review_scores_rating'])

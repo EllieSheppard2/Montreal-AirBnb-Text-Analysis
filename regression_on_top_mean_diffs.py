@@ -1,31 +1,52 @@
 import statsmodels.api as sm
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
 from word_db_creation import load_data
 
+# Load + clean
 montreal = load_data()
-
 montreal = montreal.dropna(subset=['review_scores_rating']).copy()
 montreal['description'] = montreal['description'].fillna('').str.lower()
 
-words_to_use = ['value', 'hostel', 'tourists', 'kitchenette', 'university',
-                'student', 'enclave', 'hospitals']
+# Train/test split
+train_df, test_df = train_test_split(
+    montreal,
+    test_size=0.2,
+    random_state=42
+)
 
+# Final selected words (from TRAIN analysis)
+words_to_use = [
+    'kitchenette', 'hostel', 'simple',
+    'budget'
+]
+#selected 'kitchenette', 'resort', 'doorman', 'hostel', 'simple', 'homey', 'budget', 'jacuzzi'
+#from training set of largest discrencies that logically make sense to cause rating difference.
+#dropped resort, doorman, homey, jacuzzi for non-significance.
+# Create features
 for word in words_to_use:
-    montreal[f'has_{word}'] = montreal['description'].str.contains(rf'\b{word}\b').astype(int)
+    train_df[f'has_{word}'] = train_df['description'].str.contains(rf'\b{word}\b').astype(int)
+    test_df[f'has_{word}'] = test_df['description'].str.contains(rf'\b{word}\b').astype(int)
 
-X = montreal[[f'has_{word}' for word in words_to_use]]
-X = sm.add_constant(X)
-y = montreal['review_scores_rating']
-model = sm.OLS(y, X).fit()
+# -----------------------
+# TRAIN MODEL
+# -----------------------
+X_train = train_df[[f'has_{word}' for word in words_to_use]]
+X_train = sm.add_constant(X_train)
+y_train = train_df['review_scores_rating']
+
+model = sm.OLS(y_train, X_train).fit()
 print(model.summary())
 
-#added resort, kitchenette, doorman to value, hostel, establishment, onsite, tourists. now onsite is insignificant as well as kitchenette, doorman, establishment, resort
+X_test = test_df[[f'has_{word}' for word in words_to_use]]
+X_test = sm.add_constant(X_test)
+y_test = test_df['review_scores_rating']
 
-#re-running without those. other variables stay significant
+y_pred = model.predict(X_test)
 
-#so, hostel value and tourist key words in description have significance in rating. however, they only explain 0.008 of the variation in scores.
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
 
-#actually going with printing top 30 out of find_discrepancies, then doing regression with those that have gaps above .20 and look resonable, ie. don't include "st"
-
-#now, remove non-significant at 0.05 level
-
-#final model: value, hostel, tourists, kitchenette, univeristy, student, enclave, hospitals
+print("\nTest Performance:")
+print("MSE:", mse)
+print("R^2:", r2)
